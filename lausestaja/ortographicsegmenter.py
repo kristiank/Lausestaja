@@ -102,16 +102,11 @@ class OrtographicSegmenter(object):
             start_char_pos = 0
             for possible_match in regexp.finditer(text):
                 _new_start_char_pos = possible_match.end()
-                #print(match.span())
-                #print(match.group())
-                ##print(text[start:possible_match.end()])
                 _left_side = text[start_char_pos:possible_match.end()]
                 _right_side = text[possible_match.end():]
                 for allowed_rule in self._allowed_regexps:
                     if allowed_rule[0].search(_left_side):
-                        #print("matched " + allowed_rule[0].pattern)
                         if allowed_rule[1].match(_right_side):
-                            #print("and matched " + allowed_rule[1].pattern)
                             #print("NO SPLIT")
                             _new_start_char_pos = start_char_pos
                 if not start_char_pos == _new_start_char_pos:
@@ -121,10 +116,6 @@ class OrtographicSegmenter(object):
                     self.__parent.append_sentence(sentence_text,
                                          start_char_pos,
                                          end_char_pos)
-                    #ret_sentences.append((sentence_text,
-                    #                      start_char_pos,
-                    #                      end_char_pos))
-                    #print(text[start:possible_match.end()+1])
 
                 start_char_pos = _new_start_char_pos
         return ret_sentences
