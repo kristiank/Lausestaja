@@ -53,7 +53,7 @@ class OrtographicSegmenter:
             # so be careful with empty lines in the file!
             self._possible_regexps.append(
                 regex.compile(_filedata[i], regex.VERBOSE))
-            print(self._possible_regexps[0].pattern)
+
 
     def _reload_allowed_list_file(self):
         '''(Re)loads the list with rules for non-segment borders, e.g stops
@@ -76,28 +76,15 @@ class OrtographicSegmenter:
         for i in range(len(_filedata)):
             # rules must be specified in correct order: first left, then right
             if _filedata[i].startswith('LEFT:'):
-                _rule_left = _filedata[i][5:]
+                _rule_left = regex.compile(_filedata[i][5:], regex.VERBOSE)
             elif _filedata[i].startswith('RIGHT:'):
-                _rule_right = _filedata[i][6:]
+                _rule_right = regex.compile(_filedata[i][6:], regex.VERBOSE)
                 self._allowed_regexps.append((_rule_left, _rule_right))
                 _rule_left = ''
                 _rule_right = ''
             else:
                 # everything else is ignored
                 continue
-
-
-    def _initialize_rules_from_lists(self): # DEPRECATED
-        '''Initializing the rules compiles the rules given in the lists into
-        regular expressions lists named possible_regexps, allowable_regexps and
-        force_regexps. See reload_lists() for reloading the files.
-        ATTENTION note that verbose regexps are used.'''
-        # truncate the old rule list
-        self._possible_regexps = list()
-        for rule in self._possible_rules:
-            print(rule)
-            self._possible_regexps.append(regex.compile(rule, regex.VERBOSE))
-        print(self._possible_regexps[0].pattern)
             
             
     def segment(self, text):
@@ -108,14 +95,33 @@ class OrtographicSegmenter:
             next segment start
               if found, check if allowing rule pair has any exceptions
                 in the force dictionary'''
+        ret_sentences = list()
         for regexp in self._possible_regexps:
-            start = 0
+            start_char_pos = 0
             for possible_match in regexp.finditer(text):
+                _new_start_char_pos = possible_match.end()
                 #print(match.span())
                 #print(match.group())
-                print(text[start:possible_match.end()])
-                _left_side = text[start:possible_match.end()]
+                ##print(text[start:possible_match.end()])
+                _left_side = text[start_char_pos:possible_match.end()]
                 _right_side = text[possible_match.end():]
-                #for allowed_rule in self._allowed_regexps:
-                #    if allowed_rule[0].search(_left_side)
-                start = possible_match.end()
+                for allowed_rule in self._allowed_regexps:
+                    if allowed_rule[0].search(_left_side):
+                        #print("matched " + allowed_rule[0].pattern)
+                        if allowed_rule[1].match(_right_side):
+                            #print("and matched " + allowed_rule[1].pattern)
+                            #print("NO SPLIT")
+                            _new_start_char_pos = start_char_pos
+                if not start_char_pos == _new_start_char_pos:
+                    end_char_pos = possible_match.end()+1
+                    sentence_text = text[start_char_pos:end_char_pos]
+                    # BUG NOTE! the match.end() + 1 is specific to the pattern
+                    # matched: now [.?!] happens to be 1, but this isn't sure!
+
+                    ret_sentences.append((sentence_text,
+                                          start_char_pos,
+                                          end_char_pos))
+                    #print(text[start:possible_match.end()+1])
+
+                start_char_pos = _new_start_char_pos
+        return ret_sentences

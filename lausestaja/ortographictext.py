@@ -45,4 +45,13 @@ class OrtographicText(object):
         replaced!'''
         if text is not None:
             self._text = text
-        self._segmenter.segment(self._text)
+        seg_sentences = self._segmenter.segment(self._text)
+        
+        #pos_in_text = 0
+        #for sentence in seg_sentences:
+        #    sentence_text = sentence[0]
+        #    pos_in_text += 1
+        #    start_char_pos = sentence[1]
+        #    end_char_pos = sentence[2]
+
+        #    self.append_sentence(sent

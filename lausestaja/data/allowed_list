@@ -18,6 +18,37 @@
 
 
 # RULE PAIRS
+
 # ordinal years
 LEFT: \d\.$
 RIGHT: ^\s*(a[. ]|aasta)
+
+# ordinal monthdays
+LEFT: \d\.$
+RIGHT: ^\s*(jaan|veeb|märt|april|mai|juun|juul|aug|sept|okt|nov|dets)
+
+# järgud
+LEFT: \d\.$
+RIGHT: ^\s*jär[gk]
+
+# 1. ja 2. (ja 3.) Maailmasõda
+LEFT: [123]\.$
+RIGHT: ^\s*Maailma[ ]?sõ[dj]
+
+# eesnime lühendid, nagu J. V. Veski
+LEFT: \b\p{Lu}+\.$
+RIGHT: \s*\p{Lu}
+
+# lühend s.o
+LEFT: \bs\.$
+RIGHT: ^o\b
+
+# lühend e.m.a
+LEFT: \be\.$
+RIGHT: ^m\.a\b
+LEFT: \be\.m\.$
+RIGHT: ^a\b
+
+# hüüe
+LEFT: !$
+RIGHT: \s*\p{Ll}
