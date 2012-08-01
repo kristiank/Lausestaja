@@ -1,0 +1,23 @@
+# This is the rule list of possible segment splits, it is part of the
+# Python package "lausestaja". For the segmenting algorithm, see the
+# OrtographicSegmenter class.
+#
+# The rules are specified as verbose regular expression strings for the new
+# regex package (see http://pypi.python.org/pypi/regex)
+# 
+# Lines starting with LEFT: is used for the left side rule and lines starting
+# with RIGHT: is used for the right side rule. e.g:
+# LEFT: (Dr\.|dr\.|DR\.) #matches all doctors
+# RIGHT: \s*\p{Lu} # followed by possible space and uppercase letter
+# 
+# The rules has to be specified in correct order, first the left (which is used
+# to match the previous sentence) and then the right (which is used to match the
+# following sentence.
+# 
+# All  other lines are treated as comments and ignored
+
+
+# RULE PAIRS
+# ordinal years
+LEFT: \d\.$
+RIGHT: ^\s*(a[. ]|aasta)

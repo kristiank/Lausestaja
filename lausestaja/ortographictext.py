@@ -1,25 +1,48 @@
 # -*- coding:utf-8 -*-
+import regex
+import os.path
+import lausestaja
+import lausestaja.ortographicsegmenter
 
-class OrtographicSentence:
-    '''Represents an ortographic sentence, most usually segmented as seen fit
-    by the OrtographicText segmenter'''
-#   __beginning_pos: int
-#   __end_pos: int
-#   __part_of_text: SentenceList
-#   __position_in_text: int
-#   __sentence_text: str
-#
-#   get_coord()               -> returns (start, stop)
-#   get_sentence_text(strip_ws=None)   -> returns the sentence text
-#   get_pos_in_textl()             -> returns the position in original text
-#   get_rule_matched()        -> returns the rule that caused the segmentation
-#   merge_w_next()        -> causes the sentence to merge together w next 
-#   merge_w_previous()    -> causes the sentence to merge together previous
+class OrtographicText(object):
+    '''Container for an ortographic text, which consists of a list of
+    ortographic sentences. The ortographic text also has a changeable
+    text segmenter, which can be used to segment an inputted text.'''
+    def __init__(self, text=None):
+        '''Initializes an empty text with the default segmenter.'''
+        self._sentence_list = []
+        self._text = text
+        self._length = len(self._sentence_list)
+        self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter()
 
-#class OrtographicText
-#   __sentences: List
-#   __seg_possible_list: List
-#   __seg_stop_list: List
-#   __seg_force_list: List
-#   
-#   segmenter
+    def get_sentence_list(self, preserve_ws=True):
+        '''Returns the list of ortographic sentences, setting preserve_ws to
+        False will strip whitespace of each sentence's beginning and end.'''
+        return self._sentence_list
+
+    def get_number_of_sentences(self):
+        '''Returns the number of sentences currently held in the text.'''
+        return len(self._sentence_list)
+
+    def append_sentence(self, sentence_text, start_char_pos, end_char_pos):
+        '''Appends an ortographic sentence with given text, first and last
+        character positions. Setting preserve_ws to False will strip the
+        whitespace of the sentence text.'''
+        pos_in_text = self.get_number_of_sentences()
+        os = OrtographicSentence(sentence_text,
+                                 pos_in_text,
+                                 start_char_pos,
+                                 end_char_pos)
+        self._sentence_list.append(os)
+
+    def get_sentence_in_pos(self, pos):
+        '''Returns the OrtographicSentence in the ordinal text position given
+        e.g pos=1 returns the first sentence, 2 the second etc'''
+        return self._sentence_list[pos-1]
+
+    def segment(self, text=None):
+        '''Segments the held text, if a new text is given, the old will be
+        replaced!'''
+        if text is not None:
+            self._text = text
+        self._segmenter.segment(self._text)

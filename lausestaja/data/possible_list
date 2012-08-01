@@ -1,0 +1,11 @@
+# This is the rule list of possible segment splits, it is part of the
+# Python package "lausestaja". For the segmenting algorithm, see the
+# OrtographicSegmenter class.
+#
+# The rules are specified as verbose regular expression strings for the new
+# regex package (see http://pypi.python.org/pypi/regex)
+#
+# All lines starting with # are treated as comments and ignored
+# Be careful with empty lines - they are treated as rules!
+#
+[.!?] # this should match really every possible one
