@@ -3,6 +3,7 @@ import regex
 import os.path
 import lausestaja
 import lausestaja.ortographicsegmenter
+import lausestaja.ortographicsentence
 
 class OrtographicText(object):
     '''Container for an ortographic text, which consists of a list of
@@ -13,7 +14,7 @@ class OrtographicText(object):
         self._sentence_list = []
         self._text = text
         self._length = len(self._sentence_list)
-        self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter()
+        self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter(self)
 
     def get_sentence_list(self, preserve_ws=True):
         '''Returns the list of ortographic sentences, setting preserve_ws to
@@ -29,10 +30,12 @@ class OrtographicText(object):
         character positions. Setting preserve_ws to False will strip the
         whitespace of the sentence text.'''
         pos_in_text = self.get_number_of_sentences()
-        os = OrtographicSentence(sentence_text,
-                                 pos_in_text,
-                                 start_char_pos,
-                                 end_char_pos)
+        os = lausestaja.ortographicsentence.OrtographicSentence(self,
+                                                                sentence_text,
+                                                                pos_in_text,
+                                                                start_char_pos,
+                                                                end_char_pos)
+        os.strip()
         self._sentence_list.append(os)
 
     def get_sentence_in_pos(self, pos):

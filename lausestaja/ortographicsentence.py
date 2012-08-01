@@ -2,15 +2,16 @@
 import regex
 import os.path
 
-class OrtographicSentence:
+class OrtographicSentence(object):
     '''Represents an ortographic sentence, most usually segmented as seen fit
     by the OrtographicText segmenter'''
-
-    def __init__(self, text, pos_in_text, start_char_pos, end_char_pos):
+    def __init__(self, parent, text, pos_in_text,
+                 start_char_pos, end_char_pos):
         '''Initializes an empty ortographic sentence'''
+        self.__parent = parent
         self._start_char_pos = start_char_pos
         self._end_char_pos = end_char_pos
-        self._position_in_text = pos_in_text
+        self._pos_in_text = pos_in_text
         self._content_text = text
         #self._part_of_text holds the OrtographicText instance?
 
@@ -28,7 +29,10 @@ class OrtographicSentence:
         starting position of the sentence pass the whitespace to the real
         ortographic beginning of the sentence.'''
         strip = regex.match(strip_pattern, self._content_text)
-        self._start_char_pos += strip.end()
+        strip_length = len(strip.group())
+        if strip_length > 0:
+            self._start_char_pos += strip_length
+            self._content_text = self._content_text[strip_length:]
 
     def rstrip(self, strip_pattern=r'\s*$'):
         '''Trims all whitespace away from the end of the sentence.
@@ -36,7 +40,11 @@ class OrtographicSentence:
         ending position of the sentence pass the whitespace to the real
         ortographic ending of the sentence.'''
         strip = regex.search(strip_pattern, self._content_text)
-        self._end_char_pos -= strip.end()
+        strip_length = len(strip.group())
+
+        if strip_length > 0:
+            self._end_char_pos -= strip_length
+            self._content_text = self._content_text[:-len(strip.group())]
 
     def strip(self):
         '''Trims all whitespace from the starting and ending of the sentence.
@@ -45,7 +53,14 @@ class OrtographicSentence:
         self.lstrip()
         self.rstrip()
 
+    def get_pos_in_text(self):
+        return self._pos_in_text
 
+    def get_start_char_pos(self):
+        return self._start_char_pos
+
+    def get_end_char_pos(self):
+        return self._end_char_pos
 #   get_coord()               -> returns (start, stop)
 #   get_sentence_text(strip_ws=None)   -> returns the sentence text
 #   get_pos_in_textl()             -> returns the position in original text

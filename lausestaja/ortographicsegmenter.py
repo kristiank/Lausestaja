@@ -2,7 +2,7 @@
 import regex
 import os.path
 
-class OrtographicSegmenter:
+class OrtographicSegmenter(object):
     '''This is the segmenter that segments an OrtographicText into
     OrtographicSentences. It consists of a very simple model and algorithm:
       step 1) match the text for possible segment splits using regular
@@ -15,12 +15,14 @@ class OrtographicSegmenter:
       step 3) optional: if matched against an allowing rule, check for forcing
               rules that narrow the allowing rule even further'''
     
-    def __init__(self, possible_list_filename='lausestaja/data/possible_list',
+    def __init__(self, parent = None,
+                 possible_list_filename='lausestaja/data/possible_list',
                  allowed_list_filename='lausestaja/data/allowed_list',
                  force_list_filename=None):
         '''Initializes the segmenter, if no rule list filenames are given,
         defaults are used (very Estonian specific).'''
-
+        self.__parent = parent
+        
         self._possible_list_filename = possible_list_filename
         self._reload_possible_list_file()
         
@@ -113,14 +115,15 @@ class OrtographicSegmenter:
                             #print("NO SPLIT")
                             _new_start_char_pos = start_char_pos
                 if not start_char_pos == _new_start_char_pos:
-                    end_char_pos = possible_match.end()+1
+                    end_char_pos = possible_match.end()
                     sentence_text = text[start_char_pos:end_char_pos]
-                    # BUG NOTE! the match.end() + 1 is specific to the pattern
-                    # matched: now [.?!] happens to be 1, but this isn't sure!
 
-                    ret_sentences.append((sentence_text,
-                                          start_char_pos,
-                                          end_char_pos))
+                    self.__parent.append_sentence(sentence_text,
+                                         start_char_pos,
+                                         end_char_pos)
+                    #ret_sentences.append((sentence_text,
+                    #                      start_char_pos,
+                    #                      end_char_pos))
                     #print(text[start:possible_match.end()+1])
 
                 start_char_pos = _new_start_char_pos
