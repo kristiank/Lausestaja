@@ -54,12 +54,18 @@ class OrtographicSentence(object):
         self.rstrip()
 
     def get_pos_in_text(self):
+        '''Returns the ordinal number of the sentence in the text
+        e.g if it was the first sentence, the second etc'''
         return self._pos_in_text
 
     def get_start_char_pos(self):
+        '''Returns the character position in the text of the first character
+        of the sentence'''
         return self._start_char_pos
 
     def get_end_char_pos(self):
+        '''Returns the character position in the text of the last character
+        of the sentence'''
         return self._end_char_pos
 #   get_coord()               -> returns (start, stop)
 #   get_sentence_text(strip_ws=None)   -> returns the sentence text
