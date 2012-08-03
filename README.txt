@@ -13,7 +13,17 @@ spetsiifiline võru keele jaoks.
 Kasutamine
 ==========
 
-Teksti lihtne lausestamine paistab tavaliselt niimoodi välja:
+Lausestaja üldine töömõte on peegeldatud selle moodulite jagamises, millest
+OrtographicText on siduvaks aluspunktiks -- OrtographicText representeerib
+ühte tervikteksti, mille saab sisestada nt load_text() funktsiooniga.
+Tekst tükeldatakse OrtographicSegmenteriga, mis laaditakse automaatselt vaikiv-
+reeglistikuga OrtographicText loomisel. Edasi tükeldatakse tekst 
+OrtographicText.segment() funktsiooniga. Tükeldatud teksti laused salvestatakse
+OrtographicSentence-etina listi, mis saadakse kätte
+OrtographicText.sentence_list() funktsiooniga.
+
+Kaustas 'bin/' on python skripte mis näitavad lausestaja paketti kasutamist. Ent
+olgu siin mainitud lihtne kasutamisjuhtum:
 
     from lausestaja import ortographictext
     
@@ -42,7 +52,6 @@ Algoritmi kirjeldus asub praegu siin seal OrtographicSegmenter klassi koodis.
 Edasise arenduse sihid ja võimalused
 ====================================
 
-* Python.org kasutab src/ kataloogi, järgi seda
 * Kirjutada parem proovitekst bin/proov1.py-sse
 * Vaadata litsents ja autoriõigused läbi, et ei jääks kellegi omaks
 * Lisada üldine kirjeldus mooduli üldisest ülesehitusest ja kasutamisest
