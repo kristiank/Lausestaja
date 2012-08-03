@@ -16,7 +16,7 @@ class OrtographicText(object):
         self._length = len(self._sentence_list)
         self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter(self)
 
-    def get_sentence_list(self, preserve_ws=True):
+    def sentence_list(self, preserve_ws=True):
         '''Returns the list of ortographic sentences, setting preserve_ws to
         False will strip whitespace of each sentence's beginning and end.'''
         return self._sentence_list

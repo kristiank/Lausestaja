@@ -16,17 +16,21 @@ class OrtographicSegmenter(object):
               rules that narrow the allowing rule even further'''
     
     def __init__(self, parent = None,
-                 possible_list_filename='lausestaja/data/possible_list.txt',
-                 allowed_list_filename='lausestaja/data/allowed_list.txt',
+                 possible_list_filename='possible_list.txt',
+                 allowed_list_filename='allowed_list.txt',
                  force_list_filename=None):
         '''Initializes the segmenter, if no rule list filenames are given,
         defaults are used (very Estonian specific).'''
         self.__parent = parent
+        self._data_folder_path = os.path.dirname(os.path.abspath(__file__))
+        self._data_folder_path = os.path.join(self._data_folder_path, 'data')
         
-        self._possible_list_filename = possible_list_filename
+        self._possible_list_filename = os.path.join(self._data_folder_path,
+                                                    possible_list_filename)
         self._reload_possible_list_file()
         
-        self._allowed_list_filename = allowed_list_filename
+        self._allowed_list_filename = os.path.join(self._data_folder_path,
+                                                    allowed_list_filename)
         self._reload_allowed_list_file()
 
 #   __seg_possible_list: List
@@ -119,3 +123,7 @@ class OrtographicSegmenter(object):
 
                 start_char_pos = _new_start_char_pos
         return ret_sentences
+
+
+#if __name__ == "__main__":
+#    tests()
