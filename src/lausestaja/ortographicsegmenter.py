@@ -16,8 +16,8 @@ class OrtographicSegmenter(object):
               rules that narrow the allowing rule even further'''
     
     def __init__(self, parent = None,
-                 possible_list_filename='lausestaja/data/possible_list',
-                 allowed_list_filename='lausestaja/data/allowed_list',
+                 possible_list_filename='lausestaja/data/possible_list.txt',
+                 allowed_list_filename='lausestaja/data/allowed_list.txt',
                  force_list_filename=None):
         '''Initializes the segmenter, if no rule list filenames are given,
         defaults are used (very Estonian specific).'''
