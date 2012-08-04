@@ -15,8 +15,8 @@ setup(
     scripts=['bin/proov1.py'],
     license='GNU GPL version 3 or any later version',
     long_description=open('README.txt').read(),
-    install_requires=[
-        "regex >= 0.1.2"
+    requires=[
+        "regex"
         ],
     )
 
