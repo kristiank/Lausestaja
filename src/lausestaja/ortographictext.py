@@ -11,15 +11,16 @@ class OrtographicText(object):
     text segmenter, which can be used to segment an inputted text.'''
     def __init__(self, text=None):
         '''Initializes an empty text with the default segmenter.'''
-        self._sentence_list = []
+        self._sentence_list = list()
         self._text = text
         self._length = len(self._sentence_list)
         self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter(
             self)
 
     def set_text(self, text):
-        '''Sets and segments a new text'''
+        '''Sets and segments a new text (clears the old text, if any).'''
         self._text = text
+        self._sentence_list = list()
         self.segment()
 
 

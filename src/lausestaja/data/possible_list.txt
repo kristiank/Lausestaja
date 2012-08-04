@@ -8,4 +8,4 @@
 # All lines starting with # are treated as comments and ignored
 # Be careful with empty lines - they are treated as rules!
 #
-[.!?]|\n{2,} # this should match really every possible one NOTE it also splits on double newline
+[.!?]|\n{2,}|[:](?=\s*[\p{Ps}\p{Pi}"])
