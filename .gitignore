@@ -2,3 +2,4 @@ __pycache__
 *~
 dist/*
 *.pyc
+make_dist_and_install.sh

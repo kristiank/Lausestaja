@@ -108,18 +108,23 @@ class OrtographicSegmenter(object):
                 _new_start_char_pos = possible_match.end()
                 _left_side = text[start_char_pos:possible_match.end()]
                 _right_side = text[possible_match.end():]
+                
                 for allowed_rule in self._allowed_regexps:
                     if allowed_rule[0].search(_left_side):
                         if allowed_rule[1].match(_right_side):
-                            #print("NO SPLIT")
+                            # we found an allowing rule, thus we don't start
+                            # a new sentence
                             _new_start_char_pos = start_char_pos
                 if not start_char_pos == _new_start_char_pos:
+                    # if we have a new starting character, we have to save the
+                    # previously found sentence
                     end_char_pos = possible_match.end()
                     sentence_text = text[start_char_pos:end_char_pos]
-
+                    matched_rule = (possible_match.re)
                     self.__parent.append_sentence(sentence_text,
-                                         start_char_pos,
-                                         end_char_pos)
+                                                  start_char_pos,
+                                                  end_char_pos,
+                                                  matched_rule)
 
                 start_char_pos = _new_start_char_pos
         return ret_sentences

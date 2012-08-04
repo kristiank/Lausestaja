@@ -53,6 +53,8 @@ Edasise arenduse sihid ja võimalused
 ====================================
 
 * Kirjutada parem proovitekst bin/proov1.py-sse
+* Lisada OrtographicSegmenter.segment(debug = False) mis prindib iga
+  reegli kohta kas sobitub või mitte (if debug == 2: wait_for_keypress())
 * Vaadata litsents ja autoriõigused läbi, et ei jääks kellegi omaks
 * Lisada üldine kirjeldus mooduli üldisest ülesehitusest ja kasutamisest
   samuti teha help() ja dir() selgeks

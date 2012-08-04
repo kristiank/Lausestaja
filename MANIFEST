@@ -3,9 +3,7 @@ LICENSE.txt
 README.txt
 setup.py
 bin/proov1.py
-lausestaja/__init__.py
-lausestaja/ortographicsegmenter.py
-lausestaja/ortographicsentence.py
-lausestaja/ortographictext.py
-lausestaja/data/allowed_list.txt
-lausestaja/data/possible_list.txt
+src/lausestaja/__init__.py
+src/lausestaja/ortographicsegmenter.py
+src/lausestaja/ortographicsentence.py
+src/lausestaja/ortographictext.py

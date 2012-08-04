@@ -19,9 +19,9 @@
 
 # RULE PAIRS
 
-# cluster punctuation together
+# cluster punctuation and also closing quotation marks together
 LEFT: \p{P}$
-RIGHT: ^\s*\p{P}
+RIGHT: ^\s*[.?!\p{Pe}\p{Pf}]
 
 # ordinal years
 LEFT: \d\.$
@@ -67,4 +67,4 @@ RIGHT: ^[\p{Ll}\p{N}]
 
 # hüüe
 LEFT: !$
-RIGHT: \s*\p{Ll}
+RIGHT: [\s\p{P}]*\p{Ll}

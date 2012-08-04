@@ -14,18 +14,30 @@ class OrtographicText(object):
         self._sentence_list = []
         self._text = text
         self._length = len(self._sentence_list)
-        self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter(self)
+        self._segmenter = lausestaja.ortographicsegmenter.OrtographicSegmenter(
+            self)
+
+    def set_text(self, text):
+        '''Sets and segments a new text'''
+        self._text = text
+        self.segment()
+
 
     def sentence_list(self, preserve_ws=True):
         '''Returns the list of ortographic sentences, setting preserve_ws to
         False will strip whitespace of each sentence's beginning and end.'''
         return self._sentence_list
 
+
     def get_number_of_sentences(self):
         '''Returns the number of sentences currently held in the text.'''
         return len(self._sentence_list)
 
-    def append_sentence(self, sentence_text, start_char_pos, end_char_pos):
+
+    def append_sentence(self, sentence_text, start_char_pos,
+                        end_char_pos, matched_rule,
+                        strip_whitespace = True,
+                        allow_empty_sentences = False):
         '''Appends an ortographic sentence with given text, first and last
         character positions. Setting preserve_ws to False will strip the
         whitespace of the sentence text.'''
@@ -34,14 +46,21 @@ class OrtographicText(object):
                                                                 sentence_text,
                                                                 pos_in_text,
                                                                 start_char_pos,
-                                                                end_char_pos)
-        os.strip()
-        self._sentence_list.append(os)
+                                                                end_char_pos,
+                                                                matched_rule)
+        if strip_whitespace:
+            os.strip()
+        if allow_empty_sentences:
+            self._sentence_list.append(os)
+        elif not len(os.text()) == 0:
+            self._sentence_list.append(os)
+
 
     def get_sentence_in_pos(self, pos):
         '''Returns the OrtographicSentence in the ordinal text position given
         e.g pos=1 returns the first sentence, 2 the second etc'''
         return self._sentence_list[pos-1]
+
 
     def segment(self, text=None):
         '''Segments the held text, if a new text is given, the old will be
