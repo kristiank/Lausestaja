@@ -11,8 +11,8 @@ setup(
     url='http://www.kuu.la/viki/keeleressursse',
     packages=['lausestaja'],
     package_dir={'lausestaja': 'src/lausestaja'},
-    package_data={'lausestaja': ['src/data/*.txt']},
-    scripts=['bin/proov1.py'],
+    package_data={'lausestaja': 'src/lausestaja/data/*.txt'},
+    #scripts=['bin/proov1.py'],
     license='GNU GPL version 3 or any later version',
     long_description=open('README.txt').read(),
     requires=[
