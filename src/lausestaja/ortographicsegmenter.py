@@ -104,6 +104,10 @@ class OrtographicSegmenter(object):
         ret_sentences = list()
         for regexp in self._possible_regexps:
             start_char_pos = 0
+            eof_char_pos = len(text)
+            end_char_pos = eof_char_pos
+            no_possible_match_found = False
+            
             for possible_match in regexp.finditer(text):
                 _new_start_char_pos = possible_match.end()
                 _left_side = text[start_char_pos:possible_match.end()]
@@ -125,8 +129,25 @@ class OrtographicSegmenter(object):
                                                   start_char_pos,
                                                   end_char_pos,
                                                   matched_rule)
-
+                                                  
                 start_char_pos = _new_start_char_pos
+            else:
+                no_possible_match_found = True
+                
+            # we might have dangling sentence text here, if either 
+            # 1) no possible_match was found in the text or
+            # 2) no possible_match was found in the last sentence
+            if no_possible_match_found: # case 1
+                end_char_pos = start_char_pos
+            if end_char_pos < eof_char_pos: # case 2
+                sentence_text = text[end_char_pos:eof_char_pos]
+                if not sentence_text.isspace():
+                    matched_rule = 'dangling sentence text'
+                    self.__parent.append_sentence(sentence_text,
+                                                  end_char_pos,
+                                                  eof_char_pos,
+                                                  matched_rule)
+            
         return ret_sentences
 
 
